@@ -1,0 +1,5 @@
+# Telegram Bot Token (Create with @BotFather)
+BOT_TOKEN = ''
+
+# DB Info
+DB = "test.db"
