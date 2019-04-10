@@ -33,6 +33,14 @@ class SQLHelper:
         self.session.add(chat)
         self.session.commit()
 
+    def is_duplicate_chat(self, chat_id):
+        if self.session.query(Chat).filter(
+            Chat.chat_id == chat_id
+        ).all():
+            return True
+        else:
+            return False
+
 
 if __name__ == '__main__':
     # hack route to config #FightMe
@@ -47,3 +55,8 @@ if __name__ == '__main__':
 
     # test retrival
     print(sqh.session.query(Chat).all())
+
+    # test duplicate (True)
+    print(sqh.is_duplicate_chat(chat_id="TESTNUMBER380938298320"))
+    # false
+    print(sqh.is_duplicate_chat(chat_id="VeryFalse1093839893928"))
