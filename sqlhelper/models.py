@@ -17,6 +17,21 @@ class Chat(Base):
         return "Chat ID: {}".format(self.chat_id)
 
 
+class Schedule(Base):
+    __tablename__ = 'schedules'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    # parent of tasks
+    tasks = relationship("Task", back_populates="schedule")
+    # child of chats
+    chat_id = Column(Integer, ForeignKey('chats.id'))
+    chat = relationship("Chat", back_populates="schedules")
+
+    def __repr__(self):
+        return "Schedule: {}".format(self.id)
+
+
 class Task(Base):
     __tablename__ = 'tasks'
 
@@ -30,20 +45,6 @@ class Task(Base):
 
     def __repr__(self):
         return "Task: {}".format(self.id)
-
-
-class Schedule(Base):
-    __tablename__ = 'schedules'
-
-    id = Column(Integer, primary_key=True)
-    # parent of tasks
-    tasks = relationship("Task", back_populates="schedule")
-    # child of chats
-    chat_id = Column(Integer, ForeignKey('chats.id'))
-    chat = relationship("Chat", back_populates="schedules")
-
-    def __repr__(self):
-        return "Schedule: {}".format(self.id)
 
 
 if __name__ == "__main__":
