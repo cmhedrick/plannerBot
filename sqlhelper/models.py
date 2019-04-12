@@ -11,7 +11,7 @@ class Chat(Base):
     id = Column(Integer, primary_key=True)
     chat_id = Column(String)
     # parent of schedules
-    schedules = relationship("Schedules", back_populates="chats")
+    schedules = relationship("Schedule", back_populates="chat")
 
     def __repr__(self):
         return "Chat ID: {}".format(self.chat_id)
@@ -26,7 +26,7 @@ class Task(Base):
     location = Column(Text)
     # child of schedules
     schedule_id = Column(Integer, ForeignKey('schedules.id'))
-    schedule = relationship("Schedules", back_populates="tasks")
+    schedule = relationship("Schedule", back_populates="tasks")
 
     def __repr__(self):
         return "Task: {}".format(self.id)
@@ -37,10 +37,10 @@ class Schedule(Base):
 
     id = Column(Integer, primary_key=True)
     # parent of tasks
-    tasks = relationship("Tasks", back_populates="schedules")
+    tasks = relationship("Task", back_populates="schedule")
     # child of chats
     chat_id = Column(Integer, ForeignKey('chats.id'))
-    chat = relationship("Chats", back_populates="schedules")
+    chat = relationship("Chat", back_populates="schedules")
 
     def __repr__(self):
         return "Schedule: {}".format(self.id)
