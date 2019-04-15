@@ -66,10 +66,8 @@ def add_schedule(bot, update):
                 bot.sendMessage(
                     update.message.chat_id,
                     text=(
-                        """
-                            Please provide a title by typing additional text
-                            after '/add_schedule'
-                        """
+                        'Please provide a title by typing additional text' +
+                        ' after \'/add_schedule\''
                     )
                 )
 
