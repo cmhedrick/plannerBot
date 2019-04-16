@@ -37,7 +37,6 @@ def start(bot, update):
         update.message.reply_text('This isn\'t good...')
 
 
-# def add_schedule(bot, update):
 def add_schedule(bot, update):
     """
     Add Schedule
@@ -85,6 +84,18 @@ def schedule(bot, update):
     sched = sqh.get_schedule(update.message.chat_id)
     if sched:
         msg = '<b>{0}</b>\n<strong>Tasks:</strong>'.format(sched.title)
+        if sched.tasks:
+            for i in range(len(sched.tasks)):
+                task = sched.tasks[i]
+                msg += '\n<b>{0}:</b> {1}'.format(i, task.title)
+                if task.datetime:
+                    msg += '\n<b>Date/TIme: </b> {0}'.format(task.datetime)
+                if task.location:
+                    msg += '\n<b>Location: </b> {0}'.format(task.location)
+                if task.description:
+                    msg += '\n<b>Description: </b> {0}'.format(
+                        task.description)
+
         bot.sendMessage(
             chat_id=update.message.chat_id,
             text=msg,
@@ -95,6 +106,49 @@ def schedule(bot, update):
             chat_id=update.message.chat_id,
             text='Sorry there is no schedule for this chat.'
         )
+
+
+def add_task(bot, update):
+    """
+    Add task
+    """
+    try:
+        if sqh.chat_has_schedule(update.message.chat_id):
+            if update.message.text.split('/add_task')[1] != '':
+                sched = sqh.add_task(
+                    chat_id=update.message.chat_id,
+                    task_title=update.message.text.split(
+                        '/add_task')[1].strip()
+                )
+                if sched:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('A task has been created!')
+                    )
+                    print("[+] Added task!")
+                else:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('Unkknown error try again :c')
+                    )
+                    print("[!] Error adding task")
+            else:
+                bot.sendMessage(
+                    update.message.chat_id,
+                    text=(
+                        'Please provide a title by typing additional text' +
+                        ' after \'/add_task\''
+                    )
+                )
+
+        else:
+            bot.sendMessage(
+                update.message.chat_id,
+                text=('Currently no schedule exists')
+            )
+
+    except:
+        update.message.reply_text('This isn\'t good...')
 
 
 def help(bot, update):

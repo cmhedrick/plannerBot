@@ -5,7 +5,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+# prod uncomment below
 from sqlhelper.models import Chat, Schedule, Task
+# run file as main uncomment below
+#from models import Chat, Schedule, Task
 
 
 class SQLHelper:
@@ -81,6 +84,13 @@ class SQLHelper:
         return sched
 
     # task helpers
+    def add_task(self, chat_id, task_title):
+        """add task to db, returns task obj"""
+        schedule = self.get_schedule(chat_id)
+        task = Task(schedule_id=schedule.id, title=task_title)
+        self.session.add(task)
+        self.session.commit()
+        return task
 
 
 if __name__ == '__main__':
@@ -93,15 +103,24 @@ if __name__ == '__main__':
 
     # test entry
     chat = sqh.add_chat(chat_id="TESTNUMBER380938298320")
-    schedule = sqh.add_schedule(chat_id=chat.id, schedule_title="TestSchedule")
+    schedule = sqh.add_schedule(
+        chat_id=chat.chat_id,
+        schedule_title="TestSchedule"
+    )
+    task1 = sqh.add_task(chat_id=chat.chat_id, task_title="Test Task1")
+    task2 = sqh.add_task(chat_id=chat.chat_id, task_title="Test Task2")
 
     # test chat retrival
     print(sqh.session.query(Chat).all())
     # test schedule retrival
     print(sqh.session.query(Schedule).all())
+    # get all tasks
+    print(sqh.session.query(Task).all())
     # get specific schedule
     print(sqh.get_schedule("TESTNUMBER380938298320"))
-
+    # print tasks belonging to schedule
+    for task in schedule.tasks:
+        print(task)
     # test duplicate (True)
     print(sqh.is_duplicate_chat(chat_id="TESTNUMBER380938298320"))
     # false

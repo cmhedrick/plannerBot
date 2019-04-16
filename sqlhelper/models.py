@@ -36,6 +36,7 @@ class Task(Base):
     __tablename__ = 'tasks'
 
     id = Column(Integer, primary_key=True)
+    title = Column(String)
     datetime = Column(DateTime)
     description = Column(Text)
     location = Column(Text)
