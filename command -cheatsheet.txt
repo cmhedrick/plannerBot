@@ -1,0 +1,3 @@
+add_schedule - add schedule, provide title by adding a space and text after command
+schedule - display schedule for chat
+add_task - add task, provide title by adding a space after command
