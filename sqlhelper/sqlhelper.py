@@ -69,8 +69,9 @@ class SQLHelper:
         return schedule
 
     def chat_has_schedule(self, chat_id):
+        chat = self.get_chat(chat_id)
         if self.session.query(Schedule).filter(
-            Schedule.chat_id == chat_id
+            Schedule.chat_id == chat.id
         ).all():
             return True
         else:

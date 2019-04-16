@@ -87,7 +87,7 @@ def schedule(bot, update):
         if sched.tasks:
             for i in range(len(sched.tasks)):
                 task = sched.tasks[i]
-                msg += '\n<b>{0}:</b> {1}'.format(i, task.title)
+                msg += '\n<b>{0}:</b> {1}'.format((i+1), task.title)
                 if task.datetime:
                     msg += '\n<b>Date/TIme: </b> {0}'.format(task.datetime)
                 if task.location:
@@ -115,12 +115,12 @@ def add_task(bot, update):
     try:
         if sqh.chat_has_schedule(update.message.chat_id):
             if update.message.text.split('/add_task')[1] != '':
-                sched = sqh.add_task(
+                task = sqh.add_task(
                     chat_id=update.message.chat_id,
                     task_title=update.message.text.split(
                         '/add_task')[1].strip()
                 )
-                if sched:
+                if task:
                     bot.sendMessage(
                         update.message.chat_id,
                         text=('A task has been created!')
@@ -187,6 +187,12 @@ def main():
         CommandHandler(
             "schedule",
             schedule
+        )
+    )
+    dp.add_handler(
+        CommandHandler(
+            "add_task",
+            add_task
         )
     )
 
