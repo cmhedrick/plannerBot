@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import re
+
 import telegram
 from telegram.ext import Updater, CommandHandler
 
@@ -6,6 +8,7 @@ from config import config
 from sqlhelper import sqlhelper
 
 sqh = sqlhelper.SQLHelper(config.DB)
+task_num_regex = re.compile('\ \d+')
 
 
 def start(bot, update):
@@ -87,7 +90,7 @@ def schedule(bot, update):
         if sched.tasks:
             for i in range(len(sched.tasks)):
                 task = sched.tasks[i]
-                msg += '\n<b>{0}:</b> {1}'.format((i+1), task.title)
+                msg += '\n<b>{0}:</b> {1}'.format(task.task_num, task.title)
                 if task.datetime:
                     msg += '\n<b>Date/TIme: </b> {0}'.format(task.datetime)
                 if task.location:
@@ -113,6 +116,8 @@ def add_task(bot, update):
     Add task
     """
     try:
+        task_num = task_num_regex.findall(update.message.text)[0].strip()
+
         if sqh.chat_has_schedule(update.message.chat_id):
             if update.message.text.split('/add_task')[1] != '':
                 task = sqh.add_task(
@@ -138,6 +143,50 @@ def add_task(bot, update):
                     text=(
                         'Please provide a title by typing additional text' +
                         ' after \'/add_task\''
+                    )
+                )
+
+        else:
+            bot.sendMessage(
+                update.message.chat_id,
+                text=('Currently no schedule exists')
+            )
+
+    except:
+        update.message.reply_text('This isn\'t good...')
+
+
+def update_task_desc(bot, update):
+    """
+    Update task description
+    """
+    try:
+        if sqh.chat_has_schedule(update.message.chat_id):
+            import pdb
+            pdb.set_trace()
+            if update.message.text.split('/update_task_desc')[1] != '':
+                task = sqh.update_task_desc(
+                    chat_id=update.message.chat_id,
+
+                )
+                if task:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('Task description updated!')
+                    )
+                    print("[+] Changed description!")
+                else:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('Unkknown error try again :c')
+                    )
+                    print("[!] Error changing task description")
+            else:
+                bot.sendMessage(
+                    update.message.chat_id,
+                    text=(
+                        'Please provide a title by typing additional text' +
+                        ' after \'/update_task_desc\''
                     )
                 )
 
@@ -193,6 +242,12 @@ def main():
         CommandHandler(
             "add_task",
             add_task
+        )
+    )
+    dp.add_handler(
+        CommandHandler(
+            "update_task_desc",
+            update_task_desc
         )
     )
 

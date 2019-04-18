@@ -37,6 +37,7 @@ class Task(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String)
+    task_num = Column(Integer)
     datetime = Column(DateTime)
     description = Column(Text)
     location = Column(Text)

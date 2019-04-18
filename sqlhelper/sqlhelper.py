@@ -88,9 +88,30 @@ class SQLHelper:
     def add_task(self, chat_id, task_title):
         """add task to db, returns task obj"""
         schedule = self.get_schedule(chat_id)
-        task = Task(schedule_id=schedule.id, title=task_title)
+        task = Task(
+            schedule_id=schedule.id,
+            title=task_title,
+            task_num=len(schedule.tasks) + 1
+        )
         self.session.add(task)
         self.session.commit()
+        import pdb
+        pdb.set_trace()
+        return task
+
+    def update_task_desc(self, chat_id, task_num, task_desc):
+        """add task to db, returns task obj"""
+        task = self.get_task_by_num(chat_id=chat_id, task_num=task_num)
+        task.description = task_desc
+        self.session.add(task)
+        self.session.commit()
+        return task
+
+    def get_task_by_num(self, chat_id, task_num):
+        sched = self.get_schedule(chat_id)
+        task = self.session.query(Task).filter(
+            Task.schedule_id == sched.id
+        ).first()
         return task
 
 
