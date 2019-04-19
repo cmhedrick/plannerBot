@@ -200,6 +200,51 @@ def update_task_desc(bot, update):
         update.message.reply_text('This isn\'t good...')
 
 
+def update_task_loc(bot, update):
+    """
+    Update task location
+    """
+    try:
+        if sqh.chat_has_schedule(update.message.chat_id):
+            task_num = task_num_regex.findall(update.message.text)[0].strip()
+            loc = split_cmd_num_regex.split(update.message.text)[1].strip()
+            if update.message.text.split('/update_task_loc')[1] != '':
+                task = sqh.update_task_loc(
+                    chat_id=update.message.chat_id,
+                    task_num=task_num,
+                    task_loc=loc
+                )
+                if task:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('Task location updated!')
+                    )
+                    print("[+] Changed location!")
+                else:
+                    bot.sendMessage(
+                        update.message.chat_id,
+                        text=('Unkknown error try again :c')
+                    )
+                    print("[!] Error changing task location")
+            else:
+                bot.sendMessage(
+                    update.message.chat_id,
+                    text=(
+                        'Please provide a title by typing additional text' +
+                        ' after \'/update_task_loc\''
+                    )
+                )
+
+        else:
+            bot.sendMessage(
+                update.message.chat_id,
+                text=('Currently no schedule exists')
+            )
+
+    except:
+        update.message.reply_text('This isn\'t good...')
+
+
 def help(bot, update):
     """
     Send a message when the command /help is issued.
@@ -248,6 +293,12 @@ def main():
         CommandHandler(
             "update_task_desc",
             update_task_desc
+        )
+    )
+    dp.add_handler(
+        CommandHandler(
+            "update_task_loc",
+            update_task_loc
         )
     )
 

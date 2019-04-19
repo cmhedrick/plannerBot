@@ -95,8 +95,13 @@ class SQLHelper:
         )
         self.session.add(task)
         self.session.commit()
-        import pdb
-        pdb.set_trace()
+        return task
+
+    def get_task_by_num(self, chat_id, task_num):
+        sched = self.get_schedule(chat_id)
+        task = self.session.query(Task).filter(
+            Task.schedule_id == sched.id
+        ).first()
         return task
 
     def update_task_desc(self, chat_id, task_num, task_desc):
@@ -105,13 +110,6 @@ class SQLHelper:
         task.description = task_desc
         self.session.add(task)
         self.session.commit()
-        return task
-
-    def get_task_by_num(self, chat_id, task_num):
-        sched = self.get_schedule(chat_id)
-        task = self.session.query(Task).filter(
-            Task.schedule_id == sched.id
-        ).first()
         return task
 
 
