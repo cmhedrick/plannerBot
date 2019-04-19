@@ -105,9 +105,17 @@ class SQLHelper:
         return task
 
     def update_task_desc(self, chat_id, task_num, task_desc):
-        """add task to db, returns task obj"""
+        """update task description, returns task obj"""
         task = self.get_task_by_num(chat_id=chat_id, task_num=task_num)
         task.description = task_desc
+        self.session.add(task)
+        self.session.commit()
+        return task
+
+    def update_task_loc(self, chat_id, task_num, task_loc):
+        """update task location, returns task obj"""
+        task = self.get_task_by_num(chat_id=chat_id, task_num=task_num)
+        task.location = task_loc
         self.session.add(task)
         self.session.commit()
         return task
