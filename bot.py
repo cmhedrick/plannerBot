@@ -8,7 +8,8 @@ from config import config
 from sqlhelper import sqlhelper
 
 sqh = sqlhelper.SQLHelper(config.DB)
-task_num_regex = re.compile('\ \d+')
+task_num_regex = re.compile(r'\ \d+')
+split_cmd_num_regex = re.compile(r'^/\w+\ \d+')
 
 
 def start(bot, update):
@@ -116,8 +117,6 @@ def add_task(bot, update):
     Add task
     """
     try:
-        task_num = task_num_regex.findall(update.message.text)[0].strip()
-
         if sqh.chat_has_schedule(update.message.chat_id):
             if update.message.text.split('/add_task')[1] != '':
                 task = sqh.add_task(
@@ -162,12 +161,13 @@ def update_task_desc(bot, update):
     """
     try:
         if sqh.chat_has_schedule(update.message.chat_id):
-            import pdb
-            pdb.set_trace()
+            task_num = task_num_regex.findall(update.message.text)[0].strip()
+            desc = split_cmd_num_regex.split(update.message.text)[1].strip()
             if update.message.text.split('/update_task_desc')[1] != '':
                 task = sqh.update_task_desc(
                     chat_id=update.message.chat_id,
-
+                    task_num=task_num,
+                    task_desc=desc
                 )
                 if task:
                     bot.sendMessage(
