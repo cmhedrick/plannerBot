@@ -2,10 +2,8 @@
 import re
 
 import telegram
-from telegram import ReplyKeyboardRemove
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler
 
-from telegramcalendar import telegramcalendar
 from config import config
 from sqlhelper import sqlhelper
 
