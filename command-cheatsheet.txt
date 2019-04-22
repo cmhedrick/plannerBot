@@ -1,0 +1,17 @@
+Command List
+add_schedule - add schedule, ex: "/add_schedule Schedule Title"
+schedule - display schedule for chat
+add_task - add task, ex: "/add_task Task Title"
+update_task_desc - update task description, ex: "/update_task_desc 1 task description"
+update_task_datetime - update task date/time, ex: "/update_task_datetime 1 04/26 10pm"
+
+
+Test Commands
+/add_schedule Test 1
+/add_task Test Task 1
+/update_task_desc 1 test description
+/update_task_loc 1 123 Main St. DC
+/update_task_loc 1 https://goo.gl/maps/rEjD15pDZkHTG2t38
+/update_task_datetime 1 04/26 10pm
+
+/update_task_desc 1 test description 01 01nw1 1 1m1211 1
