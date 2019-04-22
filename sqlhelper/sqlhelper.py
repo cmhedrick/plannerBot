@@ -120,6 +120,14 @@ class SQLHelper:
         self.session.commit()
         return task
 
+    def update_task_datetime(self, chat_id, task_num, task_datetime):
+        """update task datetime, returns task obj"""
+        task = self.get_task_by_num(chat_id=chat_id, task_num=task_num)
+        task.datetime = task_datetime
+        self.session.add(task)
+        self.session.commit()
+        return task
+
 
 if __name__ == '__main__':
     # hack route to config #FightMe
