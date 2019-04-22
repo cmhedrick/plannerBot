@@ -249,7 +249,7 @@ def update_task_loc(bot, update):
 
 def update_task_datetime(bot, update):
     """
-    Update task datetime
+    Update task \"datetime\"
     """
     try:
         if sqh.chat_has_schedule(update.message.chat_id):
@@ -257,8 +257,6 @@ def update_task_datetime(bot, update):
             datetime = split_cmd_num_regex.split(
                 update.message.text
             )[1].strip()
-            import pdb
-            pdb.set_trace()
             if update.message.text.split('/update_task_datetime')[1] != '':
                 task = sqh.update_task_datetime(
                     chat_id=update.message.chat_id,
@@ -303,11 +301,8 @@ def help(bot, update):
     bot.sendMessage(
         update.message.chat_id,
         text=(
-            'Commands:\n' +
-            '/start | activate bot\n' +
-            '/help | help menu\n' +
-            '/addschedule | add schedule\n' +
-            '/schedule | display schedule'
+            "If it's about the pseudo datetime don't bother." +
+            " Everything else bother @GalenChris"
         )
     )
 
