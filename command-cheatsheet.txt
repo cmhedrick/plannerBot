@@ -13,5 +13,6 @@ Test Commands
 /update_task_loc 1 123 Main St. DC
 /update_task_loc 1 https://goo.gl/maps/rEjD15pDZkHTG2t38
 /update_task_datetime 1 04/26 10pm
+/update_task_datetime 2 04/26 10pm
 
 /update_task_desc 1 test description 01 01nw1 1 1m1211 1

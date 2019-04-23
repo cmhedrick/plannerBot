@@ -100,7 +100,8 @@ class SQLHelper:
     def get_task_by_num(self, chat_id, task_num):
         sched = self.get_schedule(chat_id)
         task = self.session.query(Task).filter(
-            Task.schedule_id == sched.id
+            Task.schedule_id == sched.id,
+            Task.task_num == task_num
         ).first()
         return task
 
